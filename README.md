@@ -6,7 +6,7 @@ qunit-retry
 
 [npm-badge]: https://img.shields.io/npm/v/qunit-retry.svg
 [npm-badge-url]: https://www.npmjs.com/package/qunit-retry
-[travis-badge]: https://img.shields.io/travis/mrloop/qunit-retry/master.svg
+[travis-badge]: https://img.shields.io/travis/com/mrloop/qunit-retry/master.svg
 [travis-badge-url]: https://travis-ci.com/mrloop/qunit-retry
 
 Drop in replacement for [QUnit](https://qunitjs.com/) [test](https://api.qunitjs.com/QUnit/test) to `retry` test apon failure.
