@@ -1,6 +1,6 @@
 {
   "name": "qunit-retry",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Drop in replacement for qunit `test` which retries a failed test.",
   "main": "index.js",
   "scripts": {

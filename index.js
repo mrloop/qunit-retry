@@ -19,76 +19,104 @@
     root.returnExports = factory(root.qunit);
   }
 }(typeof self !== 'undefined' ? self : this, function (qunit) {
-  // Use qunit in some fashion.
 
-  // Just return a value to define the module export.
-  // This example returns an object, but the module
-  // can return a function as the exported value.
+  class Retry {
+    constructor(name, callback, maxRuns) {
+      this.name = name;
+      this.callback = callback;
+      this.maxRuns = maxRuns;
+      this.currentRun = 1;
 
-  const shouldRetry = function(currentRun, maxRuns, result = { result: false }) {
-    return currentRun < maxRuns && !result.result
-  }
-
-  const hooksFor = function(module, handler) {
-    let hooks = [];
-    if ( module.parentModule ) {
-      hooks = hooks.concat(hooksFor(module.parentModule, handler));
+      qunit.test(name, async (assert) => {
+        this.assert = assert;
+        await this.retry(1);
+      });
     }
-    return hooks.concat(module.hooks[ handler ]);
-  }
 
-  const runHooks = async function(assert, handler) {
-    for(const hook of hooksFor(assert.test.module, handler)) {
-      await hook.call(assert.test.testEnvironment, assert);
+    get shouldRetry() {
+      return this.currentRun < this.maxRuns && !this.result || !this.result.result
     }
-  }
 
-  const runTest = async function(assert, callback, maxRuns, currentRun) {
-    if (currentRun > 1) {
-      // first run is 1, and qunit has already triggered beforeEach
-      await runHooks(assert, "beforeEach");
+    get test() {
+      return this.assert.test;
     }
-    const result = await bufferResult(assert, callback, maxRuns, currentRun);
-    if (shouldRetry(currentRun, maxRuns, result)) {
-      // only run afterEach hooks if going to retry test
-      await runHooks(assert, "afterEach");
-    }
-    return result;
-  }
 
-  const bufferResult = async function(assert, callback, maxRuns, currentRun) {
-    const original = assert.pushResult;
-    let resultBuffer;
-    assert.pushResult = function(result) {
-      resultBuffer = result;
+    get module() {
+      return this.test.module;
     }
-    try {
-      await callback.call(assert.test.testEnvironment, assert, currentRun);
-    } catch (err) {
-      if(!shouldRetry(currentRun, maxRuns)) {
-        throw err;
+
+    get testEnvironment() {
+      return this.test.testEnvironment;
+    }
+
+    get beforeEachHooks() {
+      return this.hooksFor(this.module, "beforeEach");
+    }
+
+    get afterEachHooks() {
+      return this.hooksFor(this.module, "afterEach");
+    }
+
+    get notFirstRun() {
+      return this.currentRun > 1;
+    }
+
+    hooksFor(module, handler) {
+      let hooks = [];
+      if ( module.parentModule ) {
+        hooks = hooks.concat(this.hooksFor(module.parentModule, handler));
+      }
+      return hooks.concat(module.hooks[ handler ]);
+    }
+
+    async runHooks(hooks) {
+      for(const hook of hooks) {
+        await hook.call(this.testEnvironment, this.assert);
       }
     }
-    assert.pushResult = original;
-    return resultBuffer;
-  };
 
-  const retry = async function(assert, callback, maxRuns, currentRun) {
-    const result = await runTest(assert, callback, maxRuns, currentRun);
-    if (shouldRetry(currentRun, maxRuns, result)) {
-      await retry(assert, callback, maxRuns, currentRun+1);
-    } else {
-      const message = result.message ? result.message + '\n' : '';
-      result.message = message + '(Retried ' + maxRuns + ' times)';
-      assert.pushResult(result);
+    async runTest() {
+      if (this.notFirstRun) {
+        await this.runHooks(this.beforeEachHooks);
+      }
+      await this.bufferResult();
+      // only run afterEach hooks if going to retry test
+      if (this.shouldRetry) {
+        await this.runHooks(this.afterEachHooks);
+      }
     }
-  };
 
-  const retryTest = function(name, callback, maxRuns=2) {
-    qunit.test(name, async function(assert) {
-      await retry(assert, callback, maxRuns, 1);
-    });
-  };
+    async bufferResult() {
+      const original = this.assert.pushResult;
+      this.assert.pushResult = (r) => this.result = r;
+      try {
+        await this.callback.call(this.testEnvironment, this.assert, this.currentRun);
+      } catch (err) {
+        if(!this.shouldRetry) {
+          throw err;
+        }
+      }
+      this.assert.pushResult = original;
+    }
 
-  return retryTest;
+    get resultWithRetryMessage() {
+      const message = this.result.message ? this.result.message + '\n' : '';
+      this.result.message = message + '(Retried ' + this.maxRuns + ' times)';
+      return this.result;
+    }
+
+    async retry() {
+      await this.runTest();
+      if (this.shouldRetry) {
+        this.currentRun++;
+        await this.retry();
+      } else {
+       this.assert.pushResult(this.resultWithRetryMessage);
+      }
+    }
+  }
+
+  return function(name, callback, maxRuns=2) {
+    return new Retry(name, callback, maxRuns);
+  };
 }));
