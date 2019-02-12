@@ -9,14 +9,19 @@ qunit-retry
 [travis-badge]: https://img.shields.io/travis/com/mrloop/qunit-retry/master.svg
 [travis-badge-url]: https://travis-ci.com/mrloop/qunit-retry
 
-Drop in replacement for [QUnit](https://qunitjs.com/) [test](https://api.qunitjs.com/QUnit/test) to `retry` test apon failure.
+Drop in replacement for [QUnit](https://qunitjs.com/) [test](https://api.qunitjs.com/QUnit/test) to `retry` test upon failure.
 
 ```js
-retry("a test relying on 3rd party service that occassionaly fails", function() {
-	var result = serviceTestResult();
-	assert.equal(result, 42);
+// retry this test on failure as third party service occasionally fails
+// we need to test against third party service
+// we can live with occasional third party service failure
+retry("a test relying on 3rd party service that occassionaly fails", function(assert) {
+  var result = occasionallyFailingServiceTestResult();
+  assert.equal(result, 42);
 });
 ```
+
+Use very sparingly, for a suite of 2024 tests, using this for a single acceptance test.
 
 
 Install
