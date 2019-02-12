@@ -34,7 +34,7 @@
     }
 
     get shouldRetry() {
-      return this.currentRun < this.maxRuns && !this.result || !this.result.result
+      return this.currentRun < this.maxRuns && (!this.result || !this.result.result)
     }
 
     get test() {
@@ -82,7 +82,7 @@
       await this.bufferResult();
       // only run afterEach hooks if going to retry test
       if (this.shouldRetry) {
-        await this.runHooks(this.afterEachHooks);
+        await this.runHooks(this.afterEachHooks.reverse());
       }
     }
 
