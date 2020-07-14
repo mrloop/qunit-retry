@@ -8,6 +8,7 @@
   },
   "keywords": [
     "qunit",
+    "qunit-plugin",
     "test",
     "testing",
     "retry"
