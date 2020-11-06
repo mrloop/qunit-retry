@@ -49,6 +49,12 @@ Contributing
 npm test
 ```
 
+### How to Run Linting
+
+```bash
+npm run lint
+```
+
 License
 ------------------------------------------------------------------------------
 
