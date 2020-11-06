@@ -4,6 +4,16 @@ const timeout = function (ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
+QUnit.module('test retries and result message', hooks => {
+  hooks.after(assert => {
+    assert.equal(QUnit.config.current.assertions[0].message, '(Retried 5 times)', 'message shows retries')
+  })
+
+  retry('test retry five times', function (assert, currentRun) {
+    assert.equal(currentRun, 5)
+  }, 5)
+})
+
 retry('test default retry twice', function (assert, currentRun) {
   assert.expect(1)
   assert.equal(currentRun, 2)
