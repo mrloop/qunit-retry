@@ -1,10 +1,19 @@
 {
-  "launch_in_dev": ["qunit"],
-  "launch_in_ci": ["qunit"],
+  "framework": "qunit",
+  "test_page": "test/index.html",
+  "launch_in_dev": ["qunit", "Firefox"],
+  "launch_in_ci": ["qunit", "Firefox"],
   "launchers": {
     "qunit": {
-      "command": "qunit",
+      "command": "qunit test/retry.js",
       "protocol": "tap"
+    }
+  },
+  "browser_args": {
+    "Firefox": {
+      "ci": [
+        "--headless"
+      ]
     }
   }
 }

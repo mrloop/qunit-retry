@@ -17,7 +17,7 @@
     module.exports = factory(require('qunit'))
   } else {
     // Browser globals (root is window)
-    root.returnExports = factory(root.qunit)
+    root.returnExports = root.retry = factory(root.QUnit)
   }
 }(typeof self !== 'undefined' ? self : this, function (qunit) {
   class Retry {
