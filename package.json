@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "npm run lint && npm run test:js",
-    "test:js": "qunit",
+    "test:js": "testem ci",
     "lint": "eslint index.js"
   },
   "keywords": [
@@ -29,6 +29,7 @@
     "eslint-config-standard": "^16.0.1",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.2.1"
+    "eslint-plugin-promise": "^4.2.1",
+    "testem": "^3.2.0"
   }
 }

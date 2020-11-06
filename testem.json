@@ -1,0 +1,10 @@
+{
+  "launch_in_dev": ["qunit"],
+  "launch_in_ci": ["qunit"],
+  "launchers": {
+    "qunit": {
+      "command": "qunit",
+      "protocol": "tap"
+    }
+  }
+}
