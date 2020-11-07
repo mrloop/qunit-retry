@@ -14,6 +14,16 @@ QUnit.module('test retries and result message', hooks => {
   }, 5)
 })
 
+QUnit.module('test retries, should stop at 3 retries', hooks => {
+  hooks.after(assert => {
+    assert.equal(QUnit.config.current.assertions[0].message, '(Retried 3 times)', 'message shows retries')
+  })
+
+  retry('test retry five times', function (assert, currentRun) {
+    assert.equal(currentRun, 3)
+  }, 5)
+})
+
 retry('test default retry twice', function (assert, currentRun) {
   assert.expect(1)
   assert.equal(currentRun, 2)
