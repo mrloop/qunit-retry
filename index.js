@@ -66,7 +66,7 @@
 
       qunit.test(name, async (assert) => {
         this.assertProxy = new Proxy(assert, this.assertResultHandler)
-        await this.retry(1)
+        await this.retry(this.currentRun)
       })
     }
 
