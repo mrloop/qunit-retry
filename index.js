@@ -20,25 +20,62 @@
     root.returnExports = root.retry = factory(root.QUnit)
   }
 }(typeof self !== 'undefined' ? self : this, function (qunit) {
+  class AssertResultHandler {
+    constructor (retryObj) {
+      this.retry = retryObj
+    }
+
+    get (target, prop, receiver) {
+      if (prop === 'pushResult') {
+        return this.pushResultFn(target)
+      }
+      return Reflect.get(target, prop, receiver)
+    }
+
+    retryMessage (message, retryNum) {
+      message = message ? message + '\n' : ''
+      return `${message}(Retried ${retryNum} times)`
+    }
+
+    get isSuccess () {
+      return this.lastResult && this.lastResult.result
+    }
+
+    noop () {}
+
+    pushResultFn (target) {
+      return (result) => {
+        this.lastResult = result
+        if (this.retry.shouldRetry) {
+          return this.noop
+        } else {
+          result.message = this.retryMessage(result.message, this.retry.currentRun)
+          target.pushResult(result)
+        }
+      }
+    }
+  }
+
   class Retry {
     constructor (name, callback, maxRuns) {
       this.name = name
       this.callback = callback
       this.maxRuns = maxRuns
       this.currentRun = 1
+      this.assertResultHandler = new AssertResultHandler(this)
 
       qunit.test(name, async (assert) => {
-        this.assert = assert
+        this.assertProxy = new Proxy(assert, this.assertResultHandler)
         await this.retry(1)
       })
     }
 
     get shouldRetry () {
-      return this.currentRun < this.maxRuns && (!this.result || !this.result.result)
+      return this.currentRun < this.maxRuns && !this.assertResultHandler.isSuccess
     }
 
     get test () {
-      return this.assert.test
+      return this.assertProxy.test
     }
 
     get module () {
@@ -71,7 +108,7 @@
 
     async runHooks (hooks) {
       for (const hook of hooks) {
-        await hook.call(this.testEnvironment, this.assert)
+        await hook.call(this.testEnvironment, this.assertProxy)
       }
     }
 
@@ -79,30 +116,21 @@
       if (this.notFirstRun) {
         await this.runHooks(this.beforeEachHooks)
       }
-      await this.bufferResult()
+      await this.tryTest()
       // only run afterEach hooks if going to retry test
       if (this.shouldRetry) {
         await this.runHooks(this.afterEachHooks.reverse())
       }
     }
 
-    async bufferResult () {
-      const original = this.assert.pushResult
-      this.assert.pushResult = (r) => { this.result = r }
+    async tryTest () {
       try {
-        await this.callback.call(this.testEnvironment, this.assert, this.currentRun)
+        await this.callback.call(this.testEnvironment, this.assertProxy, this.currentRun)
       } catch (err) {
         if (!this.shouldRetry) {
           throw err
         }
       }
-      this.assert.pushResult = original
-    }
-
-    get resultWithRetryMessage () {
-      const message = this.result.message ? this.result.message + '\n' : ''
-      this.result.message = message + '(Retried ' + this.maxRuns + ' times)'
-      return this.result
     }
 
     async retry () {
@@ -110,8 +138,6 @@
       if (this.shouldRetry) {
         this.currentRun++
         await this.retry()
-      } else {
-        this.assert.pushResult(this.resultWithRetryMessage)
       }
     }
   }
