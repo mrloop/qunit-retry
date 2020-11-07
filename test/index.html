@@ -8,8 +8,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="//code.jquery.com/qunit/qunit-2.9.3.js"></script>
     <script src="/testem.js" integrity=""></script>
-    <script src="../index.js"></script>
-    <script src="browser_test.js"></script>
+    <script type="module">
+      import setup from 'https://cdn.jsdelivr.net/gh/mrloop/qunit-retry/main.js'
+
+      const retry = setup(QUnit.test)
+
+      QUnit.module('test retries and result message', hooks => {
+        hooks.after(assert => {
+          assert.equal(QUnit.config.current.assertions[0].message, '(Retried 6 times)', 'message shows retries')
+        })
+
+        retry('test default retry six times', function (assert, currentRun) {
+          assert.equal(currentRun, 6)
+        }, 6)
+      })
+    </script>
     <link rel="stylesheet" href="//code.jquery.com/qunit/qunit-2.9.3.css">
   </head>
   <body>
