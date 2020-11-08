@@ -1,25 +1,20 @@
 // https://github.com/umdjs/umd/ - returnExports
 (function (root, factory) {
-  /* global define, QUnit */
+  /* global define */
   if (typeof define === 'function' && define.amd) {
-    if (QUnit) { // if QUnit already globally defined
-      // https://github.com/karma-runner/karma-qunit/issues/57
-      define('qunit', [], function () {
-        return QUnit
-      })
-    };
-    // AMD. Register as an anonymous module, that depends on qunit
-    define(['qunit'], factory)
+    // AMD. Register as an anonymous module
+    define(factory)
   } else if (typeof module === 'object' && module.exports) {
     // Node. Does not work with strict CommonJS, but
     // only CommonJS-like environments that support module.exports,
     // like Node.
-    module.exports = factory(require('qunit'))
+    module.exports = factory()
   } else {
     // Browser globals (root is window)
-    root.returnExports = root.retry = factory(root.QUnit)
+    // run setup automatically in browser
+    root.retry = factory()(root.QUnit.test)
   }
-}(typeof self !== 'undefined' ? self : this, function (qunit) {
+}(typeof self !== 'undefined' ? self : this, function () {
   class AssertResultHandler {
     constructor (retryObj) {
       this.retry = retryObj
@@ -57,14 +52,14 @@
   }
 
   class Retry {
-    constructor (name, callback, maxRuns) {
+    constructor (name, callback, maxRuns, testFn) {
       this.name = name
       this.callback = callback
       this.maxRuns = maxRuns
       this.currentRun = 1
       this.assertResultHandler = new AssertResultHandler(this)
 
-      qunit.test(name, async (assert) => {
+      testFn(name, async (assert) => {
         this.assertProxy = new Proxy(assert, this.assertResultHandler)
         await this.retry(this.currentRun)
       })
@@ -142,7 +137,9 @@
     }
   }
 
-  return function (name, callback, maxRuns = 2) {
-    return new Retry(name, callback, maxRuns)
+  return function setup (testFn) {
+    return function retry (name, callback, maxRuns = 2) {
+      return new Retry(name, callback, maxRuns, testFn)
+    }
   }
 }))

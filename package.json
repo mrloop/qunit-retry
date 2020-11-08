@@ -1,6 +1,6 @@
 {
   "name": "qunit-retry",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "Drop in replacement for qunit `test` which retries a failed test.",
   "main": "index.js",
   "scripts": {
@@ -21,15 +21,13 @@
     "type": "git",
     "url": "https://github.com/mrloop/qunit-retry"
   },
-  "dependencies": {
-    "qunit": "^2.9.1"
-  },
   "devDependencies": {
     "eslint": "^7.12.1",
     "eslint-config-standard": "^16.0.1",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
+    "qunit": "^2.9.1",
     "testem": "^3.2.0"
   },
   "types": "./index.d.ts",

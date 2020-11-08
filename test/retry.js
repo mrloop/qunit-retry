@@ -1,8 +1,10 @@
-const retry = require('../index.js')
+const setup = require('../index.js')
 const QUnit = require('qunit')
 const timeout = function (ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
+
+const retry = setup(QUnit.test)
 
 QUnit.module('test retries and result message', hooks => {
   hooks.after(assert => {

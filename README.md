@@ -39,6 +39,20 @@ or using [`yarn`](https://yarnpkg.com/):
 yarn add --dev qunit-retry
 ```
 
+### Node
+
+```js
+const setup = require('qunit-retry');
+
+const retry = setup(QUnit.test);
+```
+
+### Directly in browser
+
+```html
+<script src="//code.jquery.com/qunit/qunit-2.9.3.js"></script>
+<script src="https://unpkg.com/qunit-retry/index.js"></script>
+```
 
 Contributing
 ------------------------------------------------------------------------------
