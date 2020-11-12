@@ -23,6 +23,8 @@ retry("a test relying on 3rd party service that occassionaly fails", async funct
 
 Use very sparingly, for a suite of 2024 tests, using this for a single acceptance test.
 
+Blog post about `qunit-retry` available [here](https://blog.mrloop.com/javascript/2019/02/26/qunit-retry.html).
+
 
 Install
 ------------------------------------------------------------------------------
