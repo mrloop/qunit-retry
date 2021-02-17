@@ -6,10 +6,10 @@
     <title>QUnit Retry Tests</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="//code.jquery.com/qunit/qunit-2.9.3.js"></script>
+    <script src="./qunit-retry/node_modules/qunit/qunit/qunit.js"></script>
     <script src="/testem.js" integrity=""></script>
     <script type="module">
-      import setup from 'https://cdn.jsdelivr.net/gh/mrloop/qunit-retry/main.js'
+      import setup from './qunit-retry/main.js'
 
       const retry = setup(QUnit.test)
 
@@ -23,7 +23,7 @@
         }, 6)
       })
     </script>
-    <link rel="stylesheet" href="//code.jquery.com/qunit/qunit-2.9.3.css">
+    <link rel="stylesheet" href="./qunit-retry/node_modules/qunit/qunit/qunit.css">
   </head>
   <body>
     <div id="qunit"></div>
