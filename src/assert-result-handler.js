@@ -19,14 +19,10 @@ export default class AssertResultHandler {
     return this.lastResult && this.lastResult.result
   }
 
-  noop () {}
-
   pushResultFn (target) {
     return (result) => {
       this.lastResult = result
-      if (this.retry.shouldRetry) {
-        return this.noop
-      } else {
+      if (!this.retry.shouldRetry) {
         result.message = this.retryMessage(result.message, this.retry.currentRun)
         target.pushResult(result)
       }
