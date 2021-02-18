@@ -2,18 +2,6 @@
   "name": "qunit-retry",
   "version": "2.0.0",
   "description": "Drop in replacement for qunit `test` which retries a failed test.",
-  "main": "index.js",
-  "module": "main.js",
-  "exports": {
-    "require": "./index.js",
-    "import": "./main.js",
-    "default": "./main.js"
-  },
-  "scripts": {
-    "test": "npm run lint && npm run test:js",
-    "test:js": "testem ci",
-    "lint": "eslint index.js"
-  },
   "keywords": [
     "qunit",
     "qunit-plugin",
@@ -21,11 +9,24 @@
     "testing",
     "retry"
   ],
-  "author": "mrloop",
-  "license": "ISC",
   "repository": {
     "type": "git",
     "url": "https://github.com/mrloop/qunit-retry"
+  },
+  "license": "ISC",
+  "author": "mrloop",
+  "exports": {
+    "require": "./index.js",
+    "import": "./main.js",
+    "default": "./main.js"
+  },
+  "main": "index.js",
+  "module": "main.js",
+  "types": "./index.d.ts",
+  "scripts": {
+    "test": "npm run lint && npm run test:js",
+    "test:js": "testem ci",
+    "lint": "eslint index.js"
   },
   "dependencies": {
     "esm": "^3.2.25"
@@ -38,7 +39,26 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "qunit": "^2.9.1",
+    "release-it": "^14.2.1",
+    "release-it-lerna-changelog": "^3.1.0",
     "testem": "^3.2.0"
   },
-  "types": "./index.d.ts"
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "release-it": {
+    "plugins": {
+      "release-it-lerna-changelog": {
+        "infile": "CHANGELOG.md",
+        "launchEditor": true
+      }
+    },
+    "git": {
+      "tagName": "v${version}"
+    },
+    "github": {
+      "release": true,
+      "tokenRef": "GITHUB_AUTH"
+    }
+  }
 }
