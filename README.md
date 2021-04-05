@@ -15,7 +15,7 @@ Drop in replacement for [QUnit](https://qunitjs.com/) [test](https://api.qunitjs
 // retry this test on failure as third party service occasionally fails
 // we need to test against third party service
 // we can live with occasional third party service failure
-retry("a test relying on 3rd party service that occassionaly fails", async function(assert) {
+retry("a test relying on 3rd party service that occasionally fails", async function(assert) {
   var result = await occasionallyFailingServiceTestResult();
   assert.equal(result, 42);
 });
@@ -59,7 +59,7 @@ const retry = setup(QUnit.test);
 
   const retry = setup(QUnit.test)
 
-  retry("a test relying on 3rd party service that occassionaly fails", async function(assert) {
+  retry("a test relying on 3rd party service that occasionally fails", async function(assert) {
     var result = await occasionallyFailingServiceTestResult();
     assert.equal(result, 42);
   });
