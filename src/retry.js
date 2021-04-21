@@ -1,7 +1,7 @@
 import AssertResultHandler from './assert-result-handler.js'
 
 export default class Retry {
-  constructor (name, callback, maxRuns, testFn) {
+  constructor (name, callback, maxRuns = 2, testFn) {
     this.name = name
     this.callback = callback
     this.maxRuns = maxRuns

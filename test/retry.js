@@ -26,7 +26,7 @@ QUnit.module('test retries, should stop at 3 retries', hooks => {
   }, 5)
 })
 
-retry('test default retry twice', function (assert, currentRun) {
+retry('test default: retry runs twice - initial attempt plus one retry', function (assert, currentRun) {
   assert.expect(1)
   assert.equal(currentRun, 2)
 })

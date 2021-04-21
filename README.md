@@ -25,6 +25,22 @@ Use very sparingly, for a suite of 2024 tests, using this for a single acceptanc
 
 Blog post about `qunit-retry` available [here](https://blog.mrloop.com/javascript/2019/02/26/qunit-retry.html).
 
+### Set Max Runs
+
+To change the number of retries, set a value in the third parameter (`maxRuns`). The default value for `maxRuns` is `2` (one attempt and one retry):
+
+```js
+// retry this test **two times** (in addition to one initial attempt)
+// on failure as third party service occasionally fails
+// we need to test against third party service
+// we can live with occasional third party service failure
+retry("a test relying on 3rd party service that occasionally fails", async function(assert) {
+  var result = await occasionallyFailingServiceTestResult();
+  assert.equal(result, 42);
+}, 3);
+```
+
+**Note:** It is generally advised to use the retry sparingly and this advice extends to setting a large number of retries.
 
 Install
 ------------------------------------------------------------------------------
