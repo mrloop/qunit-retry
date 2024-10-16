@@ -32,6 +32,7 @@
     "esm": "^3.2.25"
   },
   "devDependencies": {
+    "@release-it-plugins/lerna-changelog": "^7.0.0",
     "dotenv": "^8.2.0",
     "eslint": "^7.23.0",
     "eslint-config-standard": "^16.0.2",
@@ -39,8 +40,7 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.3.1",
     "qunit": "^2.14.1",
-    "release-it": "^14.5.1",
-    "release-it-lerna-changelog": "^3.1.0",
+    "release-it": "^17.10.0",
     "testem": "^3.4.0"
   },
   "publishConfig": {
@@ -48,7 +48,7 @@
   },
   "release-it": {
     "plugins": {
-      "release-it-lerna-changelog": {
+      "@release-it-plugins/lerna-changelog": {
         "infile": "CHANGELOG.md",
         "launchEditor": true
       }
