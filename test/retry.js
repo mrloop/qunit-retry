@@ -62,6 +62,12 @@ QUnit.module('hook context', function (hooks) {
     assert.equal(this.sharedValue, 'myContext')
     assert.equal(currentRun, 2)
   })
+
+  retry('environment it reset on each retry', function (assert, currentRun) {
+    assert.equal(this.localValue, undefined)
+    this.localValue = 'local'
+    assert.equal(currentRun, 2)
+  })
 })
 
 QUnit.module('currentRun count', function () {
