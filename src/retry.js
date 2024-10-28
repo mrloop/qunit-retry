@@ -2,15 +2,15 @@ import AssertResultHandler from './assert-result-handler.js'
 import extend from './extend.js'
 
 export default class Retry {
-  constructor (name, callback, maxRuns = 2, testFn) {
-    this.name = name
+  constructor (args, callback, maxRuns = 2, testFn) {
     this.callback = callback
     this.maxRuns = maxRuns
-    this.currentRun = 1
     this.assertResultHandler = new AssertResultHandler(this)
 
-    testFn(name, async (assert) => {
+    testFn(...args, async (assert, ...callbackArgs) => {
       this.assertProxy = new Proxy(assert, this.assertResultHandler)
+      this.callbackArgs = callbackArgs
+      this.currentRun = 1
       await this.retry(this.currentRun)
     })
   }
@@ -71,7 +71,7 @@ export default class Retry {
 
   async tryTest () {
     try {
-      await this.callback.call(this.testEnvironment, this.assertProxy, this.currentRun)
+      await this.callback.call(this.testEnvironment, this.assertProxy, ...this.callbackArgs, this.currentRun)
     } catch (err) {
       if (!this.shouldRetry) {
         throw err
