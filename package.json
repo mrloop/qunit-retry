@@ -24,8 +24,10 @@
   "module": "main.js",
   "types": "./index.d.ts",
   "scripts": {
-    "test": "npm run lint && npm run test:js",
-    "test:js": "testem ci",
+    "test": "npm run lint && npm run test:js && npm run test:smoke",
+    "test:smoke": "testem ci",
+    "test:js": "qunit",
+    "dev": "qunit --watch",
     "lint": "eslint index.js"
   },
   "dependencies": {
