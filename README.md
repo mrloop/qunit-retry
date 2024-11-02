@@ -57,6 +57,13 @@ or using [`yarn`](https://yarnpkg.com/):
 yarn add --dev qunit-retry
 ```
 
+or using [`pnpm`](https://pnpm.js.org/):
+
+```bash
+pnpm add --save-dev qunit-retry
+```
+
+
 ### Node
 
 ```js
@@ -88,13 +95,13 @@ Contributing
 ### How to Run Tests
 
 ```bash
-npm test
+pnpm test
 ```
 
 ### How to Run Linting
 
 ```bash
-npm run lint
+pnpm lint
 ```
 
 License
