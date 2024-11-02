@@ -24,7 +24,7 @@
   "module": "main.js",
   "types": "./index.d.ts",
   "scripts": {
-    "test": "npm run lint && npm run test:js && npm run test:smoke",
+    "test": "pnpm test:smoke lint && pnpm test:js && pnpm test:smoke",
     "test:smoke": "testem ci",
     "test:js": "qunit",
     "dev": "qunit --watch",

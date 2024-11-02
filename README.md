@@ -1,13 +1,11 @@
 qunit-retry
 ==============================================================================
 
-[![TravisCI Build Status][travis-badge]][travis-badge-url]
 [![Latest NPM release][npm-badge]][npm-badge-url]
+[![CI](https://github.com/mrloop//qunit-retry/workflows/CI/badge.svg)](https://github.com/mrloop/qunit-retry/actions)
 
 [npm-badge]: https://img.shields.io/npm/v/qunit-retry.svg
 [npm-badge-url]: https://www.npmjs.com/package/qunit-retry
-[travis-badge]: https://img.shields.io/travis/com/mrloop/qunit-retry/master.svg
-[travis-badge-url]: https://travis-ci.com/mrloop/qunit-retry
 
 Drop in replacement for [QUnit](https://qunitjs.com/) [test](https://api.qunitjs.com/QUnit/test) to `retry` test upon failure.
 
@@ -57,6 +55,13 @@ or using [`yarn`](https://yarnpkg.com/):
 yarn add --dev qunit-retry
 ```
 
+or using [`pnpm`](https://pnpm.js.org/):
+
+```bash
+pnpm add --save-dev qunit-retry
+```
+
+
 ### Node
 
 ```js
@@ -88,13 +93,13 @@ Contributing
 ### How to Run Tests
 
 ```bash
-npm test
+pnpm test
 ```
 
 ### How to Run Linting
 
 ```bash
-npm run lint
+pnpm lint
 ```
 
 License

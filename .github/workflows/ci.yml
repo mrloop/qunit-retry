@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    # filtering branches here prevents duplicate builds from pull_request and push
+    branches:
+      - main
+      - "v*"
+    # always run CI for tags
+    tags:
+      - "*"
+
+  # early issue detection: run CI weekly on Sundays
+  schedule:
+    - cron: "0 6 * * 0"
+
+env:
+  CI: true
+  PNPM_VERSION: 9.12.2
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4 
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.17.0
+          cache: pnpm
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Lint
+        run: pnpm lint
+      - name: Test
+        run: pnpm test
+
