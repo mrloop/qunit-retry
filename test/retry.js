@@ -133,6 +133,20 @@ QUnit.module('retry.todo', function () {
   })
 })
 
+QUnit.module('retry.skip', function () {
+  const calls = []
+
+  retry.skip('count retries', function (assert, currentRun) {
+    calls.push(currentRun)
+
+    assert.equal(currentRun, 2)
+  })
+
+  QUnit.test('verify calls', function (assert) {
+    assert.deepEqual(calls, [])
+  })
+})
+
 QUnit.module('retry.each', function () {
   const calls = []
 
@@ -158,5 +172,19 @@ QUnit.module('retry.todo.each', function () {
 
   QUnit.test('verify calls', function (assert) {
     assert.deepEqual(calls, [['A', 1], ['A', 2], ['B', 1], ['B', 2], ['C', 1], ['C', 2]])
+  })
+})
+
+QUnit.module('retry.skip.each', function () {
+  const calls = []
+
+  retry.skip.each('count retries', ['A', 'B', 'C'], function (assert, data, currentRun) {
+    calls.push([data, currentRun])
+
+    assert.equal(currentRun, 2)
+  })
+
+  QUnit.test('verify calls', function (assert) {
+    assert.deepEqual(calls, [])
   })
 })
