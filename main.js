@@ -13,6 +13,9 @@ export default function setup (testFn) {
   retry.if = function (name, condition, callback, maxRuns = 2) {
     return new Retry([name, condition], callback, maxRuns, testFn.if)
   }
+  retry.only = function (name, callback, maxRuns) {
+    return new Retry([name], callback, maxRuns, testFn.only)
+  }
 
   retry.each = function (name, dataset, callback, maxRuns = 2) {
     return new Retry([name, dataset], callback, maxRuns, testFn.each)
@@ -25,6 +28,9 @@ export default function setup (testFn) {
   }
   retry.if.each = function (name, condition, dataset, callback, maxRuns = 2) {
     return new Retry([name, condition, dataset], callback, maxRuns, testFn.if.each)
+  }
+  retry.only.each = function (name, dataset, callback, maxRuns) {
+    return new Retry([name, dataset], callback, maxRuns, testFn.only.each)
   }
   return retry
 }
