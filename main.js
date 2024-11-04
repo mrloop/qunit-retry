@@ -10,6 +10,9 @@ export default function setup (testFn) {
   retry.skip = function (name, callback, maxRuns) {
     return new Retry([name], callback, maxRuns, testFn.skip)
   }
+  retry.if = function (name, condition, callback, maxRuns = 2) {
+    return new Retry([name, condition], callback, maxRuns, testFn.if)
+  }
 
   retry.each = function (name, dataset, callback, maxRuns = 2) {
     return new Retry([name, dataset], callback, maxRuns, testFn.each)
@@ -19,6 +22,9 @@ export default function setup (testFn) {
   }
   retry.skip.each = function (name, dataset, callback, maxRuns) {
     return new Retry([name, dataset], callback, maxRuns, testFn.skip.each)
+  }
+  retry.if.each = function (name, condition, dataset, callback, maxRuns = 2) {
+    return new Retry([name, condition, dataset], callback, maxRuns, testFn.if.each)
   }
   return retry
 }

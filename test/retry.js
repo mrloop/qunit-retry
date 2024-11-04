@@ -147,6 +147,26 @@ QUnit.module('retry.skip', function () {
   })
 })
 
+QUnit.module('retry.if', function () {
+  const calls = []
+
+  retry.if('count true retries', true, function (assert, currentRun) {
+    calls.push([true, currentRun])
+
+    assert.equal(currentRun, 2)
+  })
+
+  retry.if('count false retries', false, function (assert, currentRun) {
+    calls.push([false, currentRun])
+
+    assert.equal(currentRun, 2)
+  })
+
+  QUnit.test('verify calls', function (assert) {
+    assert.deepEqual(calls, [[true, 1], [true, 2]])
+  })
+})
+
 QUnit.module('retry.each', function () {
   const calls = []
 
@@ -186,5 +206,25 @@ QUnit.module('retry.skip.each', function () {
 
   QUnit.test('verify calls', function (assert) {
     assert.deepEqual(calls, [])
+  })
+})
+
+QUnit.module('retry.if.each', function () {
+  const calls = []
+
+  retry.if.each('count true retries', true, ['A', 'B'], function (assert, data, currentRun) {
+    calls.push([true, data, currentRun])
+
+    assert.equal(currentRun, 2)
+  })
+
+  retry.if.each('count false retries', false, ['A', 'B'], function (assert, data, currentRun) {
+    calls.push([false, data, currentRun])
+
+    assert.equal(currentRun, 2)
+  })
+
+  QUnit.test('verify calls', function (assert) {
+    assert.deepEqual(calls, [[true, 'A', 1], [true, 'A', 2], [true, 'B', 1], [true, 'B', 2]])
   })
 })
