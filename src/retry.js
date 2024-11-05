@@ -59,6 +59,7 @@ export default class Retry {
 
   async runTest () {
     if (this.notFirstRun) {
+      this.assertResultHandler.isSuccess = true
       this.test.testEnvironment = extend({}, this.test.module.testEnvironment, false, true)
       await this.runHooks(this.beforeEachHooks)
     }
@@ -73,9 +74,10 @@ export default class Retry {
     try {
       await this.callback.call(this.testEnvironment, this.assertProxy, ...this.callbackArgs, this.currentRun)
     } catch (err) {
-      if (!this.shouldRetry) {
-        throw err
-      }
+      this.assertProxy.pushResult({
+        result: false,
+        message: err.message
+      })
     }
   }
 

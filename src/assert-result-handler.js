@@ -1,6 +1,7 @@
 export default class AssertResultHandler {
   constructor (retryObj) {
     this.retry = retryObj
+    this.isSuccess = true
   }
 
   get (target, prop, receiver) {
@@ -15,13 +16,9 @@ export default class AssertResultHandler {
     return `${message}(Retried ${retryNum} times)`
   }
 
-  get isSuccess () {
-    return this.lastResult && this.lastResult.result
-  }
-
   pushResultFn (target) {
     return (result) => {
-      this.lastResult = result
+      this.isSuccess = this.isSuccess && result.result
       if (!this.retry.shouldRetry) {
         result.message = this.retryMessage(result.message, this.retry.currentRun)
         target.pushResult(result)
