@@ -10,6 +10,10 @@ qunit-retry
 Drop in replacement for [QUnit](https://qunitjs.com/) [test](https://api.qunitjs.com/QUnit/test) to `retry` test upon failure.
 
 ```js
+const setup = require('qunit-retry');
+
+const retry = setup(QUnit.test);
+
 // retry this test on failure as third party service occasionally fails
 // we need to test against third party service
 // we can live with occasional third party service failure
@@ -19,13 +23,23 @@ retry("a test relying on 3rd party service that occasionally fails", async funct
 });
 ```
 
+It provides the same API as `QUnit.test`, including `test.each`, `test.only` etc. The only difference is that the test will be retried upon failure.
+
 Use very sparingly, for a suite of 2024 tests, using this for a single acceptance test.
 
 Blog post about `qunit-retry` available [here](https://blog.mrloop.com/javascript/2019/02/26/qunit-retry.html).
 
 ### Set Max Runs
 
-To change the number of retries, set a value in the third parameter (`maxRuns`). The default value for `maxRuns` is `2` (one attempt and one retry):
+The default maximum number of retries is 2 (one attempt and one retry). To change it globally, pass an additional argument to the `setup` function:
+
+```js
+const setup = require('qunit-retry');
+
+const retry = setup(QUnit.test, 3); // sets maxRuns to 3
+```
+
+To change it for a single test, pass the number of retries as the third argument:
 
 ```js
 // retry this test **two times** (in addition to one initial attempt)
