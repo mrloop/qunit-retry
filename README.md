@@ -10,6 +10,10 @@ qunit-retry
 Drop in replacement for [QUnit](https://qunitjs.com/) [test](https://api.qunitjs.com/QUnit/test) to `retry` test upon failure.
 
 ```js
+const setup = require('qunit-retry');
+
+const retry = setup(QUnit.test);
+
 // retry this test on failure as third party service occasionally fails
 // we need to test against third party service
 // we can live with occasional third party service failure
@@ -18,6 +22,8 @@ retry("a test relying on 3rd party service that occasionally fails", async funct
   assert.equal(result, 42);
 });
 ```
+
+It provides the same API as `QUnit.test`, including `test.each`, `test.only` etc. The only difference is that the test will be retried upon failure.
 
 Use very sparingly, for a suite of 2024 tests, using this for a single acceptance test.
 
