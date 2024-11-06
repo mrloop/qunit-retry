@@ -15,13 +15,9 @@ export default class AssertResultHandler {
     return `${message}(Retried ${retryNum} times)`
   }
 
-  get isSuccess () {
-    return this.lastResult && this.lastResult.result
-  }
-
   pushResultFn (target) {
     return (result) => {
-      this.lastResult = result
+      this.retry.isSuccess = this.retry.isSuccess && result.result
       if (!this.retry.shouldRetry) {
         result.message = this.retryMessage(result.message, this.retry.currentRun)
         target.pushResult(result)

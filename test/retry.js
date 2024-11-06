@@ -42,12 +42,45 @@ retry('test retry async', async function (assert, currentRun) {
   assert.equal(currentRun, 4)
 }, 4)
 
-retry('promise reject', async function (assert, currentRun) {
-  if (currentRun === 2) {
-    await Promise.reject(new Error('should be handled'))
-  }
-  assert.equal(currentRun, 5)
-}, 5)
+QUnit.module('error handling', function () {
+  retry('rejected promise is handled', async function (assert, currentRun) {
+    if (currentRun === 2) {
+      await Promise.reject(new Error('should be handled'))
+    }
+    assert.equal(currentRun, 5)
+  }, 5)
+
+  retry.todo('rejected promise on the last try is is not handled', async function (assert, currentRun) {
+    if (currentRun === 5) {
+      await Promise.reject(new Error('should not be handled'))
+    }
+    assert.equal(currentRun, 5)
+  }, 5)
+
+  retry('error is handled', async function (assert, currentRun) {
+    if (currentRun === 2) {
+      throw new Error('should be handled')
+    }
+    assert.equal(currentRun, 5)
+  }, 5)
+
+  retry.todo('error on the last try is not handled', async function (assert, currentRun) {
+    if (currentRun === 5) {
+      throw new Error('should not be handled')
+    }
+    assert.equal(currentRun, 5)
+  }, 5)
+
+  retry('failed assertion is handled', async function (assert, currentRun) {
+    assert.equal(currentRun, 5)
+    assert.ok(true)
+  }, 5)
+
+  retry.todo('failed assertion on the last try is not handled', async function (assert, currentRun) {
+    assert.ok(false)
+    assert.ok(true)
+  }, 5)
+})
 
 QUnit.module('hook context', function (hooks) {
   hooks.beforeEach(function () {
