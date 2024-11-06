@@ -6,6 +6,7 @@ export default class Retry {
     this.callback = callback
     this.maxRuns = maxRuns
     this.assertResultHandler = new AssertResultHandler(this)
+    this.isSuccess = true
 
     testFn(...args, async (assert, ...callbackArgs) => {
       this.assertProxy = new Proxy(assert, this.assertResultHandler)
@@ -16,7 +17,7 @@ export default class Retry {
   }
 
   get shouldRetry () {
-    return this.currentRun < this.maxRuns && !this.assertResultHandler.isSuccess
+    return this.currentRun < this.maxRuns && !this.isSuccess
   }
 
   get test () {
@@ -59,7 +60,7 @@ export default class Retry {
 
   async runTest () {
     if (this.notFirstRun) {
-      this.assertResultHandler.isSuccess = true
+      this.isSuccess = true
       this.test.testEnvironment = extend({}, this.test.module.testEnvironment, false, true)
       await this.runHooks(this.beforeEachHooks)
     }
