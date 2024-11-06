@@ -4,8 +4,11 @@ export default class AssertResultHandler {
   }
 
   get (target, prop, receiver) {
-    if (prop === 'pushResult') {
-      return this.pushResultFn(target)
+    switch (prop) {
+      case 'pushResult':
+        return this.pushResultFn(target)
+      case 'expect':
+        return this.expectFn(target)
     }
     return Reflect.get(target, prop, receiver)
   }
@@ -22,6 +25,12 @@ export default class AssertResultHandler {
         result.message = this.retryMessage(result.message, this.retry.currentRun)
         target.pushResult(result)
       }
+    }
+  }
+
+  expectFn (target) {
+    return count => {
+      target.expect(count + target.test.assertions.length)
     }
   }
 }
