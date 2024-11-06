@@ -167,6 +167,41 @@ QUnit.module('default max runs', function () {
   })
 })
 
+QUnit.module('assert.expect', function () {
+  const calls = []
+
+  retry('should pass with retries', function (assert, currentRun) {
+    calls.push(['with', currentRun])
+
+    assert.expect(3)
+    assert.ok(true)
+    if (currentRun === 1) { throw new Error('fail') }
+    assert.ok(true)
+    if (currentRun === 2) { throw new Error('fail') }
+    assert.ok(true)
+  }, 3)
+
+  retry('should pass without retries', function (assert, currentRun) {
+    calls.push(['without', currentRun])
+
+    assert.expect(2)
+    assert.ok(true)
+    assert.ok(true)
+  })
+
+  retry.todo('should fail with incorrect count', function (assert, currentRun) {
+    calls.push(['incorrect', currentRun])
+
+    assert.expect(2)
+    assert.ok(true)
+    if (currentRun === 1) { throw new Error('fail') }
+  })
+
+  QUnit.test('verify calls', function (assert) {
+    assert.deepEqual(calls, [['with', 1], ['with', 2], ['with', 3], ['without', 1], ['incorrect', 1], ['incorrect', 2]])
+  })
+})
+
 QUnit.module('retry.todo', function () {
   const calls = []
 
