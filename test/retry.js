@@ -7,23 +7,48 @@ const timeout = function (ms) {
 const retry = setup(QUnit.test)
 
 QUnit.module('test retries and result message', hooks => {
-  hooks.after(assert => {
-    assert.equal(QUnit.config.current.assertions[0].message, '(Retried 5 times)', 'message shows retries')
+  const messages = []
+
+  hooks.afterEach(function () {
+    if (QUnit.config.current.assertions.length) {
+      messages.push(QUnit.config.current.assertions[0].message)
+    }
   })
 
   retry('test retry five times', function (assert, currentRun) {
     assert.equal(currentRun, 5)
   }, 5)
-})
 
-QUnit.module('test retries, should stop at 3 retries', hooks => {
-  hooks.after(assert => {
-    assert.equal(QUnit.config.current.assertions[0].message, '(Retried 3 times)', 'message shows retries')
-  })
+  retry('test retry five times with custom message', function (assert, currentRun) {
+    assert.equal(currentRun, 5, 'should equal 5')
+  }, 5)
 
-  retry('test retry five times', function (assert, currentRun) {
+  retry('test stopping at 3 retries', function (assert, currentRun) {
     assert.equal(currentRun, 3)
   }, 5)
+
+  retry('test stopping at 3 retries with custom message', function (assert, currentRun) {
+    assert.equal(currentRun, 3, 'should equal 3')
+  }, 5)
+
+  retry('test stopping at 1 try', function (assert, currentRun) {
+    assert.equal(currentRun, 1)
+  }, 5)
+
+  retry('test stopping at 1 try with custom message', function (assert, currentRun) {
+    assert.equal(currentRun, 1, 'should equal 1')
+  })
+
+  QUnit.test('verify retries', function (assert) {
+    assert.deepEqual(messages.slice(0, 6), [
+      '(Tried 5 times)',
+      'should equal 5\n(Tried 5 times)',
+      '(Tried 3 times)',
+      'should equal 3\n(Tried 3 times)',
+      undefined,
+      'should equal 1'
+    ])
+  })
 })
 
 retry('test default: retry runs twice - initial attempt plus one retry', function (assert, currentRun) {
