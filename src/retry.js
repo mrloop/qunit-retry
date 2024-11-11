@@ -12,6 +12,7 @@ export default class Retry {
     testFn(...args, async (assert, ...callbackArgs) => {
       this.assertProxy = new Proxy(assert, this.assertResultHandler)
       this.callbackArgs = callbackArgs
+      assert.test.assert = this.assertProxy
       this.currentRun = 1
       await this.retry(this.currentRun)
     })

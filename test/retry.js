@@ -246,6 +246,22 @@ QUnit.module('assert.expect', function () {
   })
 })
 
+QUnit.module('assert.throws', function () {
+  const calls = []
+
+  retry('count retries', function (assert, currentRun) {
+    calls.push(currentRun)
+
+    assert.throws(() => {
+      if (currentRun === 2) throw new Error('fail')
+    })
+  })
+
+  QUnit.test('verify calls', function (assert) {
+    assert.deepEqual(calls, [1, 2])
+  })
+})
+
 QUnit.module('retry.todo', function () {
   const calls = []
 
