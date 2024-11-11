@@ -14,8 +14,11 @@ export default class AssertResultHandler {
   }
 
   retryMessage (message, retryNum) {
+    if (retryNum === 1) {
+      return message
+    }
     message = message ? message + '\n' : ''
-    return `${message}(Retried ${retryNum} times)`
+    return `${message}(Tried ${retryNum} times)`
   }
 
   pushResultFn (target) {
