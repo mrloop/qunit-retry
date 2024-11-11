@@ -1,6 +1,6 @@
 import Retry from './src/retry.js'
 
-export default function setup (testFn, defaultMaxRuns = 2) {
+export default function setup (testFn, { maxRuns: defaultMaxRuns = 2 } = {}) {
   const retry = function (name, callback, maxRuns = defaultMaxRuns) {
     return new Retry([name], callback, maxRuns, testFn)
   }

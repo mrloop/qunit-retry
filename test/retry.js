@@ -154,7 +154,7 @@ QUnit.module('hooks count', function () {
 
 QUnit.module('default max runs', function () {
   const calls = []
-  const retryThrice = setup(QUnit.test, 3)
+  const retryThrice = setup(QUnit.test, { maxRuns: 3 })
 
   retryThrice('count retries', function (assert, currentRun) {
     calls.push(currentRun)
