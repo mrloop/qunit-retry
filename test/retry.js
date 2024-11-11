@@ -179,7 +179,7 @@ QUnit.module('hooks count', function () {
 
 QUnit.module('default max runs', function () {
   const calls = []
-  const retryThrice = setup(QUnit.test, 3)
+  const retryThrice = setup(QUnit.test, { maxRuns: 3 })
 
   retryThrice('count retries', function (assert, currentRun) {
     calls.push(currentRun)
@@ -189,6 +189,25 @@ QUnit.module('default max runs', function () {
 
   QUnit.test('verify calls', function (assert) {
     assert.deepEqual(calls, [1, 2, 3])
+  })
+})
+
+QUnit.module('beforeRetry hook', function () {
+  const calls = []
+  const retryWithHook = setup(QUnit.test, {
+    beforeRetry: function (assert, currentRun) {
+      calls.push(['hook', currentRun])
+    }
+  })
+
+  retryWithHook('count retries', function (assert, currentRun) {
+    calls.push(['test', currentRun])
+
+    assert.equal(currentRun, 2)
+  }, 2)
+
+  QUnit.test('verify calls', function (assert) {
+    assert.deepEqual(calls, [['test', 1], ['hook', 2], ['test', 2]])
   })
 })
 

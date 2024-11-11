@@ -2,9 +2,10 @@ import AssertResultHandler from './assert-result-handler.js'
 import extend from './extend.js'
 
 export default class Retry {
-  constructor (args, callback, maxRuns = 2, testFn) {
+  constructor (args, callback, maxRuns = 2, testFn, beforeRetry) {
     this.callback = callback
     this.maxRuns = maxRuns
+    this.beforeRetry = beforeRetry
     this.assertResultHandler = new AssertResultHandler(this)
     this.isSuccess = true
 
@@ -60,6 +61,9 @@ export default class Retry {
 
   async runTest () {
     if (this.notFirstRun) {
+      if (this.beforeRetry) {
+        await this.beforeRetry.call(this.testEnvironment, this.assertProxy, this.currentRun)
+      }
       this.isSuccess = true
       this.test.testEnvironment = extend({}, this.test.module.testEnvironment, false, true)
       await this.runHooks(this.beforeEachHooks)

@@ -31,12 +31,12 @@ Blog post about `qunit-retry` available [here](https://blog.mrloop.com/javascrip
 
 ### Set Max Runs
 
-The default maximum number of retries is 2 (one attempt and one retry). To change it globally, pass an additional argument to the `setup` function:
+The default maximum number of retries is 2 (one attempt and one retry). To change it globally, pass the `maxRuns` option to the `setup` function:
 
 ```js
 const setup = require('qunit-retry');
 
-const retry = setup(QUnit.test, 3); // sets maxRuns to 3
+const retry = setup(QUnit.test, { maxRuns: 3 });
 ```
 
 To change it for a single test, pass the number of retries as the third argument:
@@ -53,6 +53,16 @@ retry("a test relying on 3rd party service that occasionally fails", async funct
 ```
 
 **Note:** It is generally advised to use the retry sparingly and this advice extends to setting a large number of retries.
+
+### Resetting environment between retries
+
+If you need to reset the environment between retries, you can pass a `beforeRetry` function to the `setup` function:
+
+```js
+const setup = require('qunit-retry');
+
+const retry = setup(QUnit.test, { beforeRetry: () => resetEnvironment() });
+```
 
 Install
 ------------------------------------------------------------------------------
