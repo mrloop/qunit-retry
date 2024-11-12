@@ -1,3 +1,23 @@
+
+## v2.3.0 (2024-11-12)
+
+#### :rocket: Enhancement
+* [#19](https://github.com/mrloop/qunit-retry/pull/19) fix: make sure assert.throws uses our assert proxy ([@jembezmamy](https://github.com/jembezmamy))
+* [#20](https://github.com/mrloop/qunit-retry/pull/20) feat: accept beforeRetry hook ([@jembezmamy](https://github.com/jembezmamy))
+* [#21](https://github.com/mrloop/qunit-retry/pull/21) feat: more clear retry message ([@jembezmamy](https://github.com/jembezmamy))
+* [#18](https://github.com/mrloop/qunit-retry/pull/18) feat: support assert.expect with reruns ([@jembezmamy](https://github.com/jembezmamy))
+* [#16](https://github.com/mrloop/qunit-retry/pull/16) feat: support test.each, test.todo etc. ([@jembezmamy](https://github.com/jembezmamy))
+* [#15](https://github.com/mrloop/qunit-retry/pull/15) Use GitHub actions ([@mrloop](https://github.com/mrloop))
+* [#12](https://github.com/mrloop/qunit-retry/pull/12) feat: reset test environment on each retry ([@jembezmamy](https://github.com/jembezmamy))
+
+#### :bug: Bug Fix
+* [#17](https://github.com/mrloop/qunit-retry/pull/17) fix: avoid false positives when the failed assertion is not the last one ([@jembezmamy](https://github.com/jembezmamy))
+
+#### Committers: 2
+- Ewan McDougall ([@mrloop](https://github.com/mrloop))
+- Paweł Bator ([@jembezmamy](https://github.com/jembezmamy))
+
+
 ## v2.2.0 (2021-04-05)
 
 #### :memo: Documentation
