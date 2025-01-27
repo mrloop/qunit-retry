@@ -23,4 +23,8 @@
  * });
 
  */
-declare function retry(name: string, callback: (assert: Object) => void | Promise<void>, maxRuns?: number): void;
+declare function retry(
+  name: string,
+  callback: (assert: Object) => void | Promise<void>,
+  maxRuns?: number,
+): void;
