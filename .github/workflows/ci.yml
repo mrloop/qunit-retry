@@ -6,6 +6,7 @@ on:
     # filtering branches here prevents duplicate builds from pull_request and push
     branches:
       - main
+      - master
       - "v*"
     # always run CI for tags
     tags:
@@ -25,7 +26,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4 
+        uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
         with:
           version: ${{ env.PNPM_VERSION }}
