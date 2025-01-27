@@ -15,12 +15,12 @@
   },
   "license": "ISC",
   "author": "mrloop",
+  "type": "module",
   "exports": {
-    "require": "./index.js",
     "import": "./main.js",
     "default": "./main.js"
   },
-  "main": "index.js",
+  "main": "main.js",
   "module": "main.js",
   "types": "./index.d.ts",
   "scripts": {
@@ -29,9 +29,6 @@
     "test:js": "qunit test/retry.js && qunit test/retry-only.js",
     "dev": "qunit --watch",
     "lint": "eslint index.js"
-  },
-  "dependencies": {
-    "esm": "^3.2.25"
   },
   "devDependencies": {
     "@release-it-plugins/lerna-changelog": "^7.0.0",
