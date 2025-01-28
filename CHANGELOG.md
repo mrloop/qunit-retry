@@ -1,4 +1,20 @@
 
+
+## v3.0.0 (2025-01-28)
+
+#### :boom: Breaking Change
+* [#23](https://github.com/mrloop/qunit-retry/pull/23) chore: esm only ([@mrloop](https://github.com/mrloop))
+
+#### :rocket: Enhancement
+* [#23](https://github.com/mrloop/qunit-retry/pull/23) chore: esm only ([@mrloop](https://github.com/mrloop))
+
+#### :memo: Documentation
+* [#26](https://github.com/mrloop/qunit-retry/pull/26) docs: update require / import statements ([@mrloop](https://github.com/mrloop))
+
+#### Committers: 1
+- Ewan McDougall ([@mrloop](https://github.com/mrloop))
+
+
 ## v2.3.0 (2024-11-12)
 
 #### :rocket: Enhancement
