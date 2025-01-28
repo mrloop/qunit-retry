@@ -2,7 +2,7 @@ qunit-retry
 ==============================================================================
 
 [![Latest NPM release][npm-badge]][npm-badge-url]
-[![CI](https://github.com/mrloop//qunit-retry/workflows/CI/badge.svg)](https://github.com/mrloop/qunit-retry/actions)
+![GitHub branch check runs](https://img.shields.io/github/check-runs/mrloop/qunit-retry/master?logo=github&label=CI)
 
 [npm-badge]: https://img.shields.io/npm/v/qunit-retry.svg
 [npm-badge-url]: https://www.npmjs.com/package/qunit-retry
@@ -10,10 +10,10 @@ qunit-retry
 Drop in replacement for [QUnit](https://qunitjs.com/) [test](https://api.qunitjs.com/QUnit/test) to `retry` test upon failure.
 
 ```js
-const setup = require('qunit-retry');
+import setup from "qunit-retry";
+import QUnit from "qunit";
 
 const retry = setup(QUnit.test);
-
 // retry this test on failure as third party service occasionally fails
 // we need to test against third party service
 // we can live with occasional third party service failure
@@ -34,7 +34,8 @@ Blog post about `qunit-retry` available [here](https://blog.mrloop.com/javascrip
 The default maximum number of retries is 2 (one attempt and one retry). To change it globally, pass the `maxRuns` option to the `setup` function:
 
 ```js
-const setup = require('qunit-retry');
+import setup from "qunit-retry";
+import QUnit from "qunit";
 
 const retry = setup(QUnit.test, { maxRuns: 3 });
 ```
@@ -59,7 +60,8 @@ retry("a test relying on 3rd party service that occasionally fails", async funct
 If you need to reset the environment between retries, you can pass a `beforeRetry` function to the `setup` function:
 
 ```js
-const setup = require('qunit-retry');
+import setup from "qunit-retry";
+import QUnit from "qunit";
 
 const retry = setup(QUnit.test, { beforeRetry: () => resetEnvironment() });
 ```
@@ -89,7 +91,8 @@ pnpm add --save-dev qunit-retry
 ### Node
 
 ```js
-const setup = require('qunit-retry');
+import setup from "qunit-retry";
+import QUnit from "qunit";
 
 const retry = setup(QUnit.test);
 ```
