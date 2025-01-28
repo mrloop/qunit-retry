@@ -24,7 +24,7 @@
     "test:smoke": "testem ci",
     "test:js": "qunit test/retry.js && qunit test/retry-only.js",
     "dev": "qunit --watch",
-    "lint": "eslint main.js"
+    "lint": "eslint main.js src test/*.js"
   },
   "devDependencies": {
     "@release-it-plugins/lerna-changelog": "^7.0.0",
